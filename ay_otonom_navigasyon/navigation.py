@@ -4,11 +4,16 @@ import heapq
 class AStarPlanner:
     """
     High-fidelity A* Path Planner for Lunar Terrain.
-    Accounts for slope angles and regolith difficulty.
+    Accounts for slope angles, regolith difficulty, and solar energy incidence.
     """
     def __init__(self, grid_size=(100, 100)):
         self.grid_size = grid_size
         self.cost_map = np.ones(grid_size)
+        self.solar_map = np.ones(grid_size) # 1.0 = full sun, 0.0 = PSR
+
+    def energy_cost(self, pos):
+        """Calculates energy penalty for shadowed regions (PSR)."""
+        return 1.0 / (self.solar_map[pos[0], pos[1]] + 0.1)
 
     def heuristic(self, a, b):
         return np.linalg.norm(np.array(a) - np.array(b))
@@ -37,7 +42,10 @@ class AStarPlanner:
             close_set.add(current)
             for i, j in neighbors:
                 neighbor = current[0] + i, current[1] + j            
-                tentative_g_score = gscore[current] + self.heuristic(current, neighbor) * self.cost_map[neighbor[0], neighbor[1]]
+                energy_penalty = self.energy_cost(neighbor)
+                tentative_g_score = gscore[current] + (self.heuristic(current, neighbor) * 
+                                                       self.cost_map[neighbor[0], neighbor[1]] * 
+                                                       energy_penalty)
                 
                 if 0 <= neighbor[0] < self.grid_size[0]:
                     if 0 <= neighbor[1] < self.grid_size[1]:                

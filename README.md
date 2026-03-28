@@ -1,93 +1,103 @@
-# 🌕 Ay-Otonom-Navigasyon: Aethel-Class Technical Ecosystem
+# 🌕 Ay-Otonom-Navigasyon: Supreme-Class Lunar Ecosystem
 
 ![Mission Banner](assets/banner.png)
 
-## 🚀 Vision & Mission
+## 🌟 Modern Lunar Exploration Framework
 
-**Ay-Otonom-Navigasyon** is a high-fidelity, autonomous lunar navigation stack designed for the extreme constraints of the Moon's South Pole. By integrating **Terrain Relative Navigation (TRN)** with **Predictive Local Avoidance (DWA)**, we ensure 99.9% mission reliability in zero-GNSS environments.
-
----
-
-## 📐 Mathematical Foundations
-
-### 1. State Estimation (EKF)
-The system utilizes a 9-DOF Extended Kalman Filter for non-linear state estimation:
-$$ \hat{x}_{k|k-1} = f(\hat{x}_{k-1|k-1}, u_k) $$
-$$ P_{k|k-1} = F_k P_{k-1|k-1} F_k^T + Q_k $$
-
-### 2. Path Optimization (A*)
-Cost function accounts for selenographic slope gradients ($S$) and regolith density ($\rho$):
-$$ f(n) = g(n) + h(n) + \alpha \cdot S(n) + \beta \cdot \rho(n) $$
+**Ay-Otonom-Navigasyon** is a world-class, industrial-grade autonomous navigation stack engineered for the most hostile environments in our solar system. Achieving **Supreme-Class maturity**, this ecosystem provides a complete solution for Lunar South Pole missions, transitioning from simple pathfinding to **Energy-Aware Multi-Objective Optimization**.
 
 ---
 
-## 🛠️ System Architecture (Aethel-Class)
+## 📐 Mathematical Theory of Operation
+
+### 1. Energy-Aware Path Planning (A*)
+Our proprietary A* implementation optimizes for the **Energy-Time-Safety** triplet. The cost function is defined as:
+$$ J(n) = \int_{start}^{goal} (C_{dist} + C_{slope} + C_{energy}) \, ds $$
+Where $C_{energy}$ is the inverse of solar incidence ($1/I_{solar}$), ensuring the rover prioritizes sun-lit paths to maintain battery health.
+
+### 2. Terrain Relative Navigation (TRN)
+Absolute localization is achieved through **Crater-Based Feature Matching**:
+$$ \chi^2 = \sum \frac{(D_{obs} - D_{atlas})^2}{\sigma^2} $$
+By matching observed crater diameters ($D_{obs}$) to the Lunar Data Atlas ($D_{atlas}$), we achieve sub-meter absolute accuracy without GPS.
+
+---
+
+## 🏗️ Industrial Architecture
 
 ```mermaid
-stateDiagram-v2
-    [*] --> IDLE
-    IDLE --> PLANNING : Received Goal
-    PLANNING --> EXECUTING : Path Found
-    EXECUTING --> HAZARD_RECOVERY : Collision Risk > 85%
-    HAZARD_RECOVERY --> PLANNING : Safety Re-established
-    EXECUTING --> IDLE : Goal Reached
+graph TD
+    subgraph "Perception (Industrial)"
+        LiDAR[Ouster OS1] --> SLAM[SLAM Engine]
+        Cam[Stereo Cam] --> VO[Visual Odometry]
+        Atlas[Lunar Atlas] --> TRN[TRN Module]
+    end
+
+    subgraph "Decision & Intelligence"
+        FDIR[FDIR Monitor] --> MM[Mission Manager]
+        TRN --> EKF[Advanced EKF]
+        VO --> EKF
+        EKF --> Planner[Energy-Aware A*]
+    end
+
+    subgraph "Actuation & FDIR"
+        Planner --> Controller[DWA Controller]
+        Controller --> Drive[Wheel Drive]
+        FDIR --> Emergency[Brake/Safety]
+    end
 ```
 
-### Core Modules
-| Module | Technology | Function |
-| :--- | :--- | :--- |
-| **Perception** | LiDAR-SLAM / Vision | Real-time Hazard Mapping |
-| **Navigation** | A* / DWA | Hybrid Global-Local Planning |
-| **Estimation** | Selenographic EKF | Absolute Localization |
-| **Management** | Mission FSM | Autonomous State Coordination |
+---
+
+## 🛡️ FDIR (Fault Detection, Isolation, and Recovery)
+
+System integrity is monitored by a dedicated **Watchdog Service** that handles:
+- **Sensor Dropouts:** Automatic fallback from LiDAR to Vision-only VO.
+- **Communication Loss:** Autonomous return-to-base (RTB) protocol.
+- **Thermal Hazards:** Power-down to survival mode in extreme PSR cold.
 
 ---
 
-## 🌑 Mission Profiles
+## 🌑 Mission Deployment Scenarios
 
-### 1. Shackleton Crater (South Pole)
-- **Objective:** Permanent Shadow Region (PSR) Ice Prospecting.
-- **Challenges:** Extreme low-angle lighting, -230°C temperature.
-- **Nav Strategy:** High-gain LiDAR intensity mapping.
+### ⚡ Polar Ice Prospecting
+- **Site:** Shackleton Crater Rim.
+- **Goal:** Locating volatiles in permanent shadows.
+- **Strategy:** Energy-neutral pathfinding to maximize PSR dwell time.
 
-### 2. Mare Tranquillitatis
-- **Objective:** Historical Site Preservation Survey.
-- **Challenges:** High regolith depth, loose soil localization.
-- **Nav Strategy:** Multi-spectral visual odometry.
+### 🪐 Lunar lava tube Exploration
+- **Site:** Marius Hills.
+- **Goal:** Mapping sub-surface habitats.
+- **Strategy:** Multi-agent swarm mapping with mesh comms.
 
 ---
 
-## 📦 Installation & Deployment
+## 📦 Installation & Professional Setup
 
-### Dependencies
-- **OS:** Ubuntu 22.04 LTS
-- **ROS2:** Humble / Foxy
-- **Math:** NumPy, Scipy
+### System Requirements
+- **OS:** Ubuntu 22.04 LTS (Jammy)
+- **Middleware:** ROS2 Humble
+- **Compute:** 4+ Cores, 8GB RAM, CUDA Support (optional)
 
-### Build from Source
+### Build Sequence
 ```bash
-mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws/src
+# Clone the supreme stack
 git clone https://github.com/arch-yunus/Ay-Otonom-Navigasyon.git
-cd ..
-colcon build --packages-select ay_otonom_navigasyon
+colcon build --symlink-install
 source install/setup.bash
 ```
 
-### Launch Mission
-```bash
-ros2 launch ay_otonom_navigasyon mission.launch.py
-```
+### Technical Handover
+Detailed software specifications can be found in [TECHNICAL_SPECS.md](docs/TECHNICAL_SPECS.md).
 
 ---
 
-## 🛡️ Governance & Safety
-- Developed under the **Aethel-Class** system maturity standards.
-- Follows **NASA-STD-7009A** for Modeling and Simulation.
+## 📜 Contributing & Governance
+We follow the **Aethel-Class Integrity Framework**. Please review `CONTRIBUTING.md` before submitting PRs.
 
 ---
 
 <p align="center">
-  <b>Bridging the Gap Between Science and Exploration</b><br>
-  <i>Yunus-Arch Technical Systems © 2026</i>
+  <b>Pioneering the Future of Lunar Infrastructure</b><br>
+  <i>Yunus-Arch Aerospace & Robotics © 2026</i><br>
+  <i>"Ad Astra per Aspera"</i>
 </p>

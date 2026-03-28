@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(os.getcwd())
-from src.navigation import AStarPlanner
+from ay_otonom_navigasyon.navigation import AStarPlanner
 
 def test_astar_simple():
     """Verifies that the A* planner can find a straight path in a clear grid."""

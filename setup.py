@@ -29,6 +29,7 @@ setup(
             'estimation_node = ay_otonom_navigasyon.estimation_node:main',
             'mission_manager = ay_otonom_navigasyon.mission_manager:main',
             'teleop_node = ay_otonom_navigasyon.teleop_node:main',
+            'fdir_node = ay_otonom_navigasyon.fdir_node:main',
         ],
     },
 )
