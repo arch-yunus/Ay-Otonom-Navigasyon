@@ -9,10 +9,18 @@ class AStarPlanner:
     def __init__(self, grid_size=(100, 100)):
         self.grid_size = grid_size
         self.cost_map = np.ones(grid_size)
-        self.solar_map = np.ones(grid_size) # 1.0 = full sun, 0.0 = PSR
+        self.solar_map = np.ones(grid_size) 
+        self.terrain_map = np.zeros(grid_size) # 0: Regolit, 1: Kaya, 2: Krater Duvarı
+
+    def friction_coefficient(self, pos):
+        """Arazi tipine göre sürtünme katsayısını hesaplar."""
+        terrain_type = self.terrain_map[pos[0], pos[1]]
+        if terrain_type == 1: return 1.2 # Kaya (Yüksek tutunuş)
+        if terrain_type == 2: return 0.6 # Krater Duvarı (Gevşek/Zor)
+        return 0.8 # Standart Regolit
 
     def energy_cost(self, pos):
-        """Calculates energy penalty for shadowed regions (PSR)."""
+        """Kalıcı gölge bölgeler (PSR) için enerji maliyeti hesaplar."""
         return 1.0 / (self.solar_map[pos[0], pos[1]] + 0.1)
 
     def heuristic(self, a, b):
@@ -43,9 +51,12 @@ class AStarPlanner:
             for i, j in neighbors:
                 neighbor = current[0] + i, current[1] + j            
                 energy_penalty = self.energy_cost(neighbor)
+                mu = self.friction_coefficient(neighbor)
+                
+                # Toplam Maliyet: Mesafe * Eğim * Enerji / Sürtünme
                 tentative_g_score = gscore[current] + (self.heuristic(current, neighbor) * 
                                                        self.cost_map[neighbor[0], neighbor[1]] * 
-                                                       energy_penalty)
+                                                       energy_penalty / mu)
                 
                 if 0 <= neighbor[0] < self.grid_size[0]:
                     if 0 <= neighbor[1] < self.grid_size[1]:                

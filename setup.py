@@ -31,6 +31,7 @@ setup(
             'teleop_node = ay_otonom_navigasyon.teleop_node:main',
             'fdir_node = ay_otonom_navigasyon.fdir_node:main',
             'swarm_node = ay_otonom_navigasyon.swarm_logic:main',
+            'recovery_node = ay_otonom_navigasyon.recovery:main',
         ],
     },
 )
