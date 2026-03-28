@@ -25,8 +25,14 @@ def generate_launch_description():
         ),
         Node(
             package='ay_otonom_navigasyon',
-            executable='state_estimator_node',
+            executable='estimation_node',
             name='estimator',
+            parameters=[params_file]
+        ),
+        Node(
+            package='ay_otonom_navigasyon',
+            executable='mission_manager',
+            name='manager',
             parameters=[params_file]
         )
     ])
