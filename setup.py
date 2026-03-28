@@ -30,6 +30,7 @@ setup(
             'mission_manager = ay_otonom_navigasyon.mission_manager:main',
             'teleop_node = ay_otonom_navigasyon.teleop_node:main',
             'fdir_node = ay_otonom_navigasyon.fdir_node:main',
+            'swarm_node = ay_otonom_navigasyon.swarm_logic:main',
         ],
     },
 )
