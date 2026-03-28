@@ -1,0 +1,20 @@
+# Lunar Navigation Parameters
+
+rover_controller:
+  ros__parameters:
+    kp: 1.5
+    ki: 0.1
+    kd: 0.05
+    max_linear_vel: 0.5 # m/s (safe for lunar regolith)
+    max_angular_vel: 1.0 # rad/s
+
+path_planner:
+  ros__parameters:
+    grid_resolution: 0.1
+    safety_margin: 0.5 # distance from detected hazards
+    replan_interval: 1.0 # seconds
+
+perception:
+  ros__parameters:
+    crater_threshold: 0.8
+    hazard_variance: 0.5

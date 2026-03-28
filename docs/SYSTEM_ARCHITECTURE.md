@@ -18,8 +18,23 @@ The Extended Kalman Filter integrates:
 -   Visual Odometry (Stability)
 -   Lunar Star Tracker (Absolute Heading)
 
-## 4. Simulation Environment
-The `sim/` folder provides Gazebo configurations for the **Shackleton Crater** region, accounting for:
--   $1/6g$ Gravity.
--   Regolith soil modeling.
--   Low-angle lighting conditions.
+## 5. Algorithmic Deep-Dive
+
+### A* Path Planning
+The `AStarPlanner` implementation utilizes a priority-queue based search with a custom cost function:
+$$Cost(n) = g(n) + h(n) \cdot W_{terrain}$$
+Where $W_{terrain}$ is derived from the hazard mapping variance, effectively penalizing steep slopes and high-regolith-risk areas.
+
+### EKF Sensor Fusion
+The Extended Kalman Filter tracks a 9-DOF state vector:
+-   **Position:** $[x, y, z]$
+-   **Orientation:** $[roll, pitch, yaw]$
+-   **Velocity:** $[v_x, v_y, v_z]$
+The prediction step uses a constant-velocity kinematic model, while the update step integrates absolute position fixes from the `CraterDetector` module.
+
+## 6. How to Run (Development)
+To verify the navigation logic without a full ROS2 stack:
+```bash
+python src/test_algorithms.py
+```
+This script validates the path-finding capability and obstacle avoidance logic in real-time.
