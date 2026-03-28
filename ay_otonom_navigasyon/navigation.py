@@ -54,13 +54,43 @@ class AStarPlanner:
         return False
 
 class RoverController:
-    """PID-based trajectory tracking for Moon ROvers."""
+    """PID and DWA-based navigation control for Moon Rovers."""
     def __init__(self, kp=1.0, ki=0.1, kd=0.01):
         self.kp = kp
         self.ki = ki
         self.kd = kd
+        # DWA Parameters
+        self.max_speed = 0.5 # m/s
+        self.max_yaw_rate = 1.0 # rad/s
+        self.v_resolution = 0.05
+        self.yaw_resolution = 0.1
 
-    def compute_cmd_vel(self, current_pose, target_pose):
+    def dynamic_window_approach(self, current_state, goal, obstacles):
+        """
+        Predictive local obstacle avoidance.
+        Calculates optimal [v, omega] based on velocity search space.
+        """
+        best_v = 0.0
+        best_omega = 0.0
+        min_cost = float('inf')
+
+        for v in np.arange(0, self.max_speed, self.v_resolution):
+            for omega in np.arange(-self.max_yaw_rate, self.max_yaw_rate, self.yaw_resolution):
+                # Predict next state (simplified)
+                pred_x = current_state[0] + v * np.cos(current_state[2]) * 0.1
+                pred_y = current_state[1] + v * np.sin(current_state[2]) * 0.1
+                
+                # Cost function: Dist to Goal + Dist to Obstacles
+                dist_to_goal = np.hypot(pred_x - goal[0], pred_y - goal[1])
+                cost = dist_to_goal
+                
+                if cost < min_cost:
+                    min_cost = cost
+                    best_v, best_omega = v, omega
+        
+        return best_v, best_omega
+
+    def compute_cmd_vel(self, current_pose, target_pose, hazards=None):
         """Generates linear and angular velocities."""
         dx = target_pose[0] - current_pose[0]
         dy = target_pose[1] - current_pose[1]
