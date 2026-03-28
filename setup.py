@@ -32,6 +32,7 @@ setup(
             'fdir_node = ay_otonom_navigasyon.fdir_node:main',
             'swarm_node = ay_otonom_navigasyon.swarm_logic:main',
             'recovery_node = ay_otonom_navigasyon.recovery:main',
+            'telemetry_node = ay_otonom_navigasyon.telemetry_node:main',
         ],
     },
 )

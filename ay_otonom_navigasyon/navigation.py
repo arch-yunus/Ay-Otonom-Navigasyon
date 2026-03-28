@@ -50,20 +50,20 @@ class AStarPlanner:
             close_set.add(current)
             for i, j in neighbors:
                 neighbor = current[0] + i, current[1] + j            
-                energy_penalty = self.energy_cost(neighbor)
-                mu = self.friction_coefficient(neighbor)
                 
-                # Toplam Maliyet: Mesafe * Eğim * Enerji / Sürtünme
-                tentative_g_score = gscore[current] + (self.heuristic(current, neighbor) * 
-                                                       self.cost_map[neighbor[0], neighbor[1]] * 
-                                                       energy_penalty / mu)
-                
-                if 0 <= neighbor[0] < self.grid_size[0]:
-                    if 0 <= neighbor[1] < self.grid_size[1]:                
-                        if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
-                            continue
-                    else: continue
-                else: continue
+                if 0 <= neighbor[0] < self.grid_size[0] and 0 <= neighbor[1] < self.grid_size[1]:
+                    energy_penalty = self.energy_cost(neighbor)
+                    mu = self.friction_coefficient(neighbor)
+                    
+                    # Toplam Maliyet: Mesafe * Eğim * Enerji / Sürtünme
+                    tentative_g_score = gscore[current] + (self.heuristic(current, neighbor) * 
+                                                           self.cost_map[neighbor[0], neighbor[1]] * 
+                                                           energy_penalty / mu)
+                    
+                    if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
+                        continue
+                else: 
+                    continue
                 
                 if tentative_g_score < gscore.get(neighbor, 0) or neighbor not in [i[1] for i in oheap]:
                     came_from[neighbor] = current
